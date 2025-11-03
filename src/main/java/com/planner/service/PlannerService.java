@@ -2,6 +2,7 @@ package com.planner.service;
 
 import com.planner.dto.CreatePlannerRequest;
 import com.planner.dto.CreatePlannerResponse;
+import com.planner.dto.GetPlannerResponse;
 import com.planner.entity.Planner;
 import com.planner.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,22 @@ public class PlannerService {
                 savedPlanner.getName(),
                 savedPlanner.getCreatedAt(),
                 savedPlanner.getModifiedAt()
+        );
+    }
+
+    //선택일정 조회
+    @Transactional(readOnly = true)
+    public GetPlannerResponse getOne(Long plannerId) {
+        Planner planner = plannerRepository.findById(plannerId).orElseThrow(
+                ()-> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
+        );
+        return new GetPlannerResponse(
+                planner.getId(),
+                planner.getTitle(),
+                planner.getContents(),
+                planner.getName(),
+                planner.getCreatedAt(),
+                planner.getModifiedAt()
         );
     }
 }
