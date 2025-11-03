@@ -1,8 +1,6 @@
 package com.planner.service;
 
-import com.planner.dto.CreatePlannerRequest;
-import com.planner.dto.CreatePlannerResponse;
-import com.planner.dto.GetPlannerResponse;
+import com.planner.dto.*;
 import com.planner.entity.Planner;
 import com.planner.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
@@ -83,5 +81,27 @@ public class PlannerService {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    @Transactional
+    public UpdatePlannerResponse updatePlanner(Long plannerId, UpdatePlannerRequest request) {
+        Planner planner = plannerRepository.findById(plannerId).orElseThrow(
+                () -> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
+        );
+
+        if (planner.getPassword().equals(request.getPassword())) {
+        planner.update(request.getTitle(), request.getName(), request.getPassword());
+        } //패스워드를 서버로 전달하는 의미가 없는 것 같아서, 전달받았으니 검증까지 진행
+
+        return new UpdatePlannerResponse(
+                planner.getId(),
+                planner.getTitle(),
+                planner.getContents(),
+                planner.getName(),
+                planner.getCreatedAt(),
+                planner.getModifiedAt()
+        );
+
+
     }
 }

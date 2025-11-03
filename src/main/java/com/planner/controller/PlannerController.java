@@ -1,8 +1,6 @@
 package com.planner.controller;
 
-import com.planner.dto.CreatePlannerRequest;
-import com.planner.dto.CreatePlannerResponse;
-import com.planner.dto.GetPlannerResponse;
+import com.planner.dto.*;
 import com.planner.service.PlannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +26,14 @@ public class PlannerController {
 
     //전체일정 조회
     @GetMapping("/planners")
-    public List<GetPlannerResponse> getAllPlanner(@RequestParam(required = false) String name) {
+    public List<GetPlannerResponse> getAllPlanner(@RequestParam(required = false) String name) { //생성자이지만 입력 안하도록 허용 -> null 전달
         return plannerService.getAllPlanner(name);
+    }
+
+    //선택일정 업데이트
+    @PatchMapping("/planners/{plannerId}")
+    public UpdatePlannerResponse updatePlanner(@PathVariable Long plannerId, @RequestBody UpdatePlannerRequest request) {
+        return plannerService.updatePlanner(plannerId, request);
     }
 
 }

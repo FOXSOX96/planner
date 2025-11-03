@@ -25,9 +25,8 @@ public class Planner extends BaseEntity {
         this.password = password;
     }
 
-    public void update(String title, String contents, String name, String password) {
+    public void update(String title, String name, String password) {
         this.title = title;
-        this.contents = contents;
         this.name = name;
         this.password = password;
     }
