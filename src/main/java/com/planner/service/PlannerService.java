@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -59,10 +60,13 @@ public class PlannerService {
         List<Planner> planners;
 
         if (name == null) {
-            planners = plannerRepository.findAll();
+            planners = plannerRepository.findAll().stream()
+                    .sorted(Comparator.comparing(Planner::getModifiedAt).reversed())
+                    .toList();
         } else {
             planners = plannerRepository.findAll().stream()
                     .filter(planner -> planner.getName().equals(name))
+                    .sorted(Comparator.comparing(Planner::getModifiedAt).reversed())
                     .toList();
         }
         List<GetPlannerResponse> dtos = new ArrayList<>();
