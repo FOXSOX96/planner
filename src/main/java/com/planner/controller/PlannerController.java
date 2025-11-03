@@ -36,4 +36,11 @@ public class PlannerController {
         return plannerService.updatePlanner(plannerId, request);
     }
 
+    //선택일정 삭제
+    @DeleteMapping("/planners/{plannerId}")
+    public void deletePlanner(@PathVariable Long plannerId, @RequestBody DeletePlannerRequest request) {
+        plannerService.deletePlanner(plannerId, request);
+    }
+
+
 }
