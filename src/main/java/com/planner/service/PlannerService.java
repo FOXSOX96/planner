@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PlannerService {
@@ -16,7 +19,7 @@ public class PlannerService {
 
     //일정생성
     @Transactional
-    public CreatePlannerResponse create(CreatePlannerRequest request) {
+    public CreatePlannerResponse createPlanner(CreatePlannerRequest request) {
         Planner planner = new Planner(
                 request.getTitle(),
                 request.getContents(),
@@ -36,9 +39,9 @@ public class PlannerService {
 
     //선택일정 조회
     @Transactional(readOnly = true)
-    public GetPlannerResponse getOne(Long plannerId) {
+    public GetPlannerResponse getOnePlanner(Long plannerId) {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
-                ()-> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
+                () -> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
         );
         return new GetPlannerResponse(
                 planner.getId(),
@@ -48,5 +51,33 @@ public class PlannerService {
                 planner.getCreatedAt(),
                 planner.getModifiedAt()
         );
+    }
+
+    //전체일정 조회
+    @Transactional(readOnly = true)
+    public List<GetPlannerResponse> getAllPlanner(String name) {
+        List<Planner> planners;
+
+        if (name == null) {
+            planners = plannerRepository.findAll();
+        } else {
+            planners = plannerRepository.findAll().stream()
+                    .filter(planner -> planner.getName().equals(name))
+                    .toList();
+        }
+        List<GetPlannerResponse> dtos = new ArrayList<>();
+
+        for (Planner planner : planners) {
+            GetPlannerResponse dto = new GetPlannerResponse(
+                    planner.getId(),
+                    planner.getTitle(),
+                    planner.getContents(),
+                    planner.getName(),
+                    planner.getCreatedAt(),
+                    planner.getModifiedAt()
+            );
+            dtos.add(dto);
+        }
+        return dtos;
     }
 }
