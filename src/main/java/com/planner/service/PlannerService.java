@@ -57,6 +57,8 @@ public class PlannerService {
     public List<GetPlannerResponse> getAllPlanner(String name) {
         List<Planner> planners;
 
+        //이름값이 없으면 전체 일정 조회
+        //이름값이 있으면 해당 이름의 일정만 전체 조회
         if (name == null) {
             planners = plannerRepository.findAll().stream()
                     .sorted(Comparator.comparing(Planner::getModifiedAt).reversed())
@@ -83,6 +85,7 @@ public class PlannerService {
         return dtos;
     }
 
+    //선택일정 업데이트
     @Transactional
     public UpdatePlannerResponse updatePlanner(Long plannerId, UpdatePlannerRequest request) {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
@@ -90,7 +93,7 @@ public class PlannerService {
         );
 
         if (planner.getPassword().equals(request.getPassword())) {
-        planner.update(request.getTitle(), request.getName(), request.getPassword());
+            planner.update(request.getTitle(), request.getName(), request.getPassword());
         } //패스워드를 서버로 전달하는 의미가 없는 것 같아서, 전달받았으니 검증까지 진행
 
         return new UpdatePlannerResponse(
@@ -102,6 +105,18 @@ public class PlannerService {
                 planner.getModifiedAt()
         );
 
+
+    }
+
+    //선택일정 삭제
+    @Transactional
+    public void deletePlanner(Long plannerId, DeletePlannerRequest request) {
+        Planner planner = plannerRepository.findById(plannerId).orElseThrow(
+                () -> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
+        );
+        if (planner.getPassword().equals(request.getPassword())) {
+            plannerRepository.deleteById(plannerId);
+        } //패스워드를 서버로 전달하는 의미가 없는 것 같아서, 전달받았으니 검증까지 진행
 
     }
 }
