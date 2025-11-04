@@ -63,9 +63,6 @@ public class CommentService {
         return dtos;
     }
 
-
-
-
     //특정 일정에 달린 댓글만 조회하는 Stream
     private Stream<Comment> commentsOfPlan(Long plannerId) {
         return commentRepository.findAll().stream()
