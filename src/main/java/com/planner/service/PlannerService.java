@@ -1,5 +1,8 @@
 package com.planner.service;
 
+import com.planner.comment.dto.GetCommentResponse;
+import com.planner.comment.entity.Comment;
+import com.planner.comment.repository.CommentRepository;
 import com.planner.dto.*;
 import com.planner.entity.Planner;
 import com.planner.repository.PlannerRepository;
@@ -10,11 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class PlannerService {
+
+    /**Planner패키지 > Comment패키지 포함*/
     private final PlannerRepository plannerRepository;
+    private final CommentRepository commentRepository;
 
     //일정생성
     @Transactional
@@ -38,11 +45,11 @@ public class PlannerService {
 
     //선택일정 조회
     @Transactional(readOnly = true)
-    public GetPlannerResponse getOnePlanner(Long plannerId) {
+    public GetOnePlannerResponse getOnePlanner(Long plannerId) {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
                 () -> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
         );
-        return new GetPlannerResponse(
+        GetPlannerResponse getPlannerResponse = new GetPlannerResponse(
                 planner.getId(),
                 planner.getTitle(),
                 planner.getContents(),
@@ -50,6 +57,22 @@ public class PlannerService {
                 planner.getCreatedAt(),
                 planner.getModifiedAt()
         );
+        //선택일정의 댓글 조회 (CommentService클래스에서 그대로 가져옴)
+        List<Comment> comments = commentsOfPlan(plannerId).toList(); //특정 일정에 달린 댓글만 리스트화
+        List<GetCommentResponse> commentsList = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            GetCommentResponse dto = new GetCommentResponse(
+                    comment.getId(),
+                    comment.getPlannerId(),
+                    comment.getContents(),
+                    comment.getName(),
+                    comment.getCreatedAt(),
+                    comment.getModifiedAt()
+            );
+            commentsList.add(dto);
+        }
+        return new GetOnePlannerResponse(getPlannerResponse, commentsList);
     }
 
     //전체일정 조회
@@ -119,4 +142,11 @@ public class PlannerService {
         } //패스워드를 서버로 전달하는 의미가 없는 것 같아서, 전달받았으니 검증까지 진행
 
     }
+
+    //특정 일정에 달린 댓글만 조회하는 Stream
+    private Stream<Comment> commentsOfPlan(Long plannerId) {
+        return commentRepository.findAll().stream()
+                .filter(comment -> comment.getPlannerId().equals(plannerId));
+    }
+
 }
