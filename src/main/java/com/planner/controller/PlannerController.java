@@ -5,6 +5,7 @@ import com.planner.service.PlannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -33,13 +34,13 @@ public class PlannerController {
 
     //선택일정 업데이트
     @PatchMapping("/{plannerId}")
-    public UpdatePlannerResponse updatePlanner(@PathVariable Long plannerId, @RequestBody UpdatePlannerRequest request) {
+    public UpdatePlannerResponse updatePlanner(@PathVariable Long plannerId, @RequestBody UpdatePlannerRequest request) throws AccessDeniedException {
         return plannerService.updatePlanner(plannerId, request);
     }
 
     //선택일정 삭제
     @DeleteMapping("/{plannerId}")
-    public void deletePlanner(@PathVariable Long plannerId, @RequestBody DeletePlannerRequest request) {
+    public void deletePlanner(@PathVariable Long plannerId, @RequestBody DeletePlannerRequest request) throws AccessDeniedException {
         plannerService.deletePlanner(plannerId, request);
     }
 

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -110,7 +111,7 @@ public class PlannerService {
 
     //선택일정 업데이트
     @Transactional
-    public UpdatePlannerResponse updatePlanner(Long plannerId, UpdatePlannerRequest request) {
+    public UpdatePlannerResponse updatePlanner(Long plannerId, UpdatePlannerRequest request) throws AccessDeniedException {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
                 () -> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
         );
@@ -118,6 +119,9 @@ public class PlannerService {
         if (planner.getPassword().equals(request.getPassword())) {
             planner.update(request.getTitle(), request.getName(), request.getPassword());
         } //패스워드를 서버로 전달하는 의미가 없는 것 같아서, 전달받았으니 검증까지 진행
+        else {
+            throw new AccessDeniedException("비밀번호가 일치하지 않습니다.");
+        }
 
         return new UpdatePlannerResponse(
                 planner.getId(),
@@ -133,13 +137,16 @@ public class PlannerService {
 
     //선택일정 삭제
     @Transactional
-    public void deletePlanner(Long plannerId, DeletePlannerRequest request) {
+    public void deletePlanner(Long plannerId, DeletePlannerRequest request) throws AccessDeniedException {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
                 () -> new IllegalArgumentException("플래너 ID " + plannerId + "에 해당하는 플래너가 없습니다.")
         );
         if (planner.getPassword().equals(request.getPassword())) {
             plannerRepository.deleteById(plannerId);
         } //패스워드를 서버로 전달하는 의미가 없는 것 같아서, 전달받았으니 검증까지 진행
+        else {
+            throw new AccessDeniedException("비밀번호가 일치하지 않습니다.");
+        }
 
     }
 
