@@ -2,11 +2,16 @@ package com.planner.comment.service;
 
 import com.planner.comment.dto.CreateCommentRequest;
 import com.planner.comment.dto.CreateCommentResponse;
+import com.planner.comment.dto.GetCommentResponse;
 import com.planner.comment.entity.Comment;
 import com.planner.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +28,7 @@ public class CommentService {
                 request.getPassword()
         );
         Comment savedComment = commentRepository.save(comment);
-        if (commentRepository.countByPlannerId(plannerId) > 10) { //특정 일정에 댓글갯수가 10개 넘으면 저장하지 않음
+        if (commentsOfPlan(plannerId).count() > 10) { //특정 일정에 댓글갯수가 10개 넘으면 저장하지 않음
             commentRepository.delete(comment);
             throw new IllegalStateException("댓글은 최대 10개까지만 등록할 수 있습니다.");
         } else {
@@ -36,5 +41,34 @@ public class CommentService {
                     savedComment.getModifiedAt()
             );
         }
+    }
+
+    //특정 일정 댓글 조회
+    @Transactional
+    public List<GetCommentResponse> getComment(Long plannerId) {
+        List<Comment> comments = commentsOfPlan(plannerId).toList(); //특정 일정에 달린 댓글만 리스트화
+        List<GetCommentResponse> dtos = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            GetCommentResponse dto = new GetCommentResponse(
+                    comment.getId(),
+                    comment.getPlannerId(),
+                    comment.getContents(),
+                    comment.getName(),
+                    comment.getCreatedAt(),
+                    comment.getModifiedAt()
+            );
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+
+
+
+    //특정 일정에 달린 댓글만 조회하는 Stream
+    private Stream<Comment> commentsOfPlan(Long plannerId) {
+        return commentRepository.findAll().stream()
+                .filter(comment -> comment.getPlannerId().equals(plannerId));
     }
 }
