@@ -21,7 +21,7 @@ public class PlannerController {
 
     //선택일정 조회
     @GetMapping("/{plannerId}")
-    public GetPlannerResponse getOnePlanner(@PathVariable Long plannerId) {
+    public GetOnePlannerResponse getOnePlanner(@PathVariable Long plannerId) {
         return plannerService.getOnePlanner(plannerId);
     }
 

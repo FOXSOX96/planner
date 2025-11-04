@@ -29,7 +29,7 @@ public class CommentService {
         );
         Comment savedComment = commentRepository.save(comment);
         if (commentsOfPlan(plannerId).count() > 10) { //특정 일정에 댓글갯수가 10개 넘으면 저장하지 않음
-            commentRepository.delete(comment);
+            commentRepository.delete(comment); //계속 쌓이는 것 방지
             throw new IllegalStateException("댓글은 최대 10개까지만 등록할 수 있습니다.");
         } else {
             return new CreateCommentResponse(
@@ -43,8 +43,8 @@ public class CommentService {
         }
     }
 
-    //특정 일정 댓글 조회
-    @Transactional
+    //선택일정의 댓글 조회
+    @Transactional(readOnly = true)
     public List<GetCommentResponse> getComment(Long plannerId) {
         List<Comment> comments = commentsOfPlan(plannerId).toList(); //특정 일정에 달린 댓글만 리스트화
         List<GetCommentResponse> dtos = new ArrayList<>();
