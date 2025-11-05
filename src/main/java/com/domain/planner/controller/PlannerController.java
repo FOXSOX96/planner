@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class PlannerController {
 
     //선택일정 업데이트
     @PatchMapping("/{plannerId}")
-    public ResponseEntity<UpdatePlannerResponse> updatePlanner(@PathVariable Long plannerId, @RequestBody @Valid UpdatePlannerRequest request) throws AccessDeniedException {
+    public ResponseEntity<UpdatePlannerResponse> updatePlanner(@PathVariable Long plannerId, @RequestBody @Valid UpdatePlannerRequest request) throws AuthenticationException {
         return ResponseEntity.status(HttpStatus.OK).body(plannerService.updatePlanner(plannerId, request));
     }
 
