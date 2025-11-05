@@ -4,6 +4,7 @@ import com.domain.comment.dto.CreateCommentRequest;
 import com.domain.comment.dto.CreateCommentResponse;
 import com.domain.comment.dto.GetCommentResponse;
 import com.domain.comment.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class CommentController {
     // - 기능
     //댓글 생성
     @PostMapping //@PathVariable로 plannerId를 전달받아 일정간 댓글을 분류하는데 사용
-    public ResponseEntity<CreateCommentResponse> createComment (@PathVariable Long plannerId, @RequestBody CreateCommentRequest request) {
+    public ResponseEntity<CreateCommentResponse> createComment (@PathVariable Long plannerId, @RequestBody @Valid CreateCommentRequest request) {
      return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(plannerId, request));
     }
 
