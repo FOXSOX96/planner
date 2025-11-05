@@ -32,7 +32,7 @@ public class PlannerService {
     private final CommentRepository commentRepository;
 
     // - 기능
-    //일정생성
+    //region 일정생성
     @Transactional
     public CreatePlannerResponse createPlanner(CreatePlannerRequest request) {
         Planner planner = new Planner(
@@ -51,8 +51,9 @@ public class PlannerService {
                 savedPlanner.getModifiedAt()
         );
     }
+    //endregion
 
-    //선택일정 조회
+    //region 선택일정 조회
     @Transactional(readOnly = true)
     public GetOnePlannerResponse getOnePlanner(Long plannerId) {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
@@ -83,8 +84,9 @@ public class PlannerService {
         }
         return new GetOnePlannerResponse(getPlannerResponse, commentsList);
     }
+    //endregion
 
-    //전체일정 조회
+    //region 전체일정 조회
     @Transactional(readOnly = true)
     public List<GetPlannerResponse> getAllPlanner(String name) {
         List<Planner> planners;
@@ -116,8 +118,9 @@ public class PlannerService {
         }
         return dtos;
     }
+    //endregion
 
-    //선택일정 업데이트
+    //region 선택일정 업데이트
     @Transactional
     public UpdatePlannerResponse updatePlanner(Long plannerId, UpdatePlannerRequest request) throws AuthenticationException {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
@@ -142,8 +145,9 @@ public class PlannerService {
 
 
     }
+    //endregion
 
-    //선택일정 삭제
+    //region 선택일정 삭제
     @Transactional
     public void deletePlanner(Long plannerId, DeletePlannerRequest request) throws AccessDeniedException {
         Planner planner = plannerRepository.findById(plannerId).orElseThrow(
@@ -157,11 +161,13 @@ public class PlannerService {
         }
 
     }
+    //endregion
 
-    //특정 일정에 달린 댓글만 조회하는 Stream
+    //region 특정 일정에 달린 댓글만 조회하는 Stream (Extracted 매서드)
     private Stream<Comment> commentsOfPlan(Long plannerId) {
         return commentRepository.findAll().stream()
                 .filter(comment -> comment.getPlannerId().equals(plannerId));
     }
+    //endregion
 
 }

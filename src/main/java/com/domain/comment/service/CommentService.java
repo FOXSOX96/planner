@@ -20,7 +20,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     // - 기능
-    //댓글 생성
+    //region 댓글 생성
     @Transactional
     public CreateCommentResponse createComment(Long plannerId, CreateCommentRequest request) {
         Comment comment = new Comment(
@@ -44,8 +44,9 @@ public class CommentService {
             );
         }
     }
+    //endregion
 
-    //선택일정의 댓글 조회
+    //region 선택일정의 댓글 조회
     @Transactional(readOnly = true)
     public List<GetCommentResponse> getComment(Long plannerId) {
         List<Comment> comments = commentsOfPlan(plannerId).toList(); //특정 일정에 달린 댓글만 리스트화
@@ -64,10 +65,12 @@ public class CommentService {
         }
         return dtos;
     }
+    //endregion
 
-    //특정 일정에 달린 댓글만 조회하는 Stream
+    //region 특정 일정에 달린 댓글만 조회하는 Stream
     private Stream<Comment> commentsOfPlan(Long plannerId) {
         return commentRepository.findAll().stream()
                 .filter(comment -> comment.getPlannerId().equals(plannerId));
     }
+    //endregion
 }
