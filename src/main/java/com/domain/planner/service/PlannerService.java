@@ -1,9 +1,15 @@
 package com.domain.planner.service;
 
-import com.domain.comment.dto.GetCommentResponse;
+import com.domain.comment.dto.response.GetCommentResponse;
 import com.domain.comment.entity.Comment;
 import com.domain.comment.repository.CommentRepository;
-import com.domain.planner.dto.*;
+import com.domain.planner.dto.request.CreatePlannerRequest;
+import com.domain.planner.dto.request.DeletePlannerRequest;
+import com.domain.planner.dto.request.UpdatePlannerRequest;
+import com.domain.planner.dto.response.CreatePlannerResponse;
+import com.domain.planner.dto.response.GetOnePlannerResponse;
+import com.domain.planner.dto.response.GetPlannerResponse;
+import com.domain.planner.dto.response.UpdatePlannerResponse;
 import com.domain.planner.entity.Planner;
 import com.domain.planner.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package com.domain.comment.service;
 
-import com.domain.comment.dto.CreateCommentRequest;
-import com.domain.comment.dto.CreateCommentResponse;
-import com.domain.comment.dto.GetCommentResponse;
+import com.domain.comment.dto.request.CreateCommentRequest;
+import com.domain.comment.dto.response.CreateCommentResponse;
+import com.domain.comment.dto.response.GetCommentResponse;
 import com.domain.comment.entity.Comment;
 import com.domain.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;

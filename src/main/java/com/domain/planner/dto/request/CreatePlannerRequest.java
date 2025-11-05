@@ -1,4 +1,4 @@
-package com.domain.planner.dto;
+package com.domain.planner.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

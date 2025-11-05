@@ -1,6 +1,6 @@
-package com.domain.planner.dto;
+package com.domain.planner.dto.response;
 
-import com.domain.comment.dto.GetCommentResponse;
+import com.domain.comment.dto.response.GetCommentResponse;
 import lombok.Getter;
 
 import java.util.List;

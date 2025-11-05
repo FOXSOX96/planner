@@ -1,4 +1,4 @@
-package com.domain.comment.dto;
+package com.domain.comment.dto.response;
 
 import lombok.Getter;
 
