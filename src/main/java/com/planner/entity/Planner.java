@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "planners")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Planner extends BaseEntity {
+    // - 속성
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +23,7 @@ public class Planner extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    // - 생성자
     public Planner(String title, String contents, String name, String password) {
         this.title = title;
         this.contents = contents;
@@ -29,6 +31,7 @@ public class Planner extends BaseEntity {
         this.password = password;
     }
 
+    // - 기능
     public void update(String title, String name, String password) {
         this.title = title;
         this.name = name;

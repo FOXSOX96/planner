@@ -13,8 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/planners/{plannerId}/comments")
 public class CommentController {
+    // - 속성
     private final CommentService commentService;
 
+    // - 기능
     //댓글 생성
     @PostMapping //@PathVariable로 plannerId를 전달받아 일정간 댓글을 분류하는데 사용
     public CreateCommentResponse createComment (@PathVariable Long plannerId, @RequestBody CreateCommentRequest request) {

@@ -19,11 +19,12 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class PlannerService {
-
+    // - 속성
     /**Planner패키지 > Comment패키지 포함*/
     private final PlannerRepository plannerRepository;
     private final CommentRepository commentRepository;
 
+    // - 기능
     //일정생성
     @Transactional
     public CreatePlannerResponse createPlanner(CreatePlannerRequest request) {

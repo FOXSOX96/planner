@@ -16,8 +16,10 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
+    // - 속성
     private final CommentRepository commentRepository;
 
+    // - 기능
     //댓글 생성
     @Transactional
     public CreateCommentResponse createComment(Long plannerId, CreateCommentRequest request) {

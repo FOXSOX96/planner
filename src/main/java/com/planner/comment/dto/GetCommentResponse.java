@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class GetCommentResponse {
+    // - 속성
     private final Long id;
     private final Long plannerId;
     private final String contents;
@@ -13,6 +14,7 @@ public class GetCommentResponse {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
+    // - 생성자
     public GetCommentResponse(Long id, Long plannerId, String contents, String name, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.plannerId = plannerId;

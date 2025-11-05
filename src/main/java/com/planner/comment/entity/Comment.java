@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name ="comments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
+    // - 속성
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +23,7 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    // - 생성자
     public Comment(Long plannerId, String contents, String name, String password) {
         this.plannerId = plannerId;
         this.contents = contents;
@@ -29,6 +31,7 @@ public class Comment extends BaseEntity {
         this.password = password;
     }
 
+    // - 기능
     public void update(Long plannerId, String contents, String name, String password) {
         this.plannerId = plannerId;
         this.contents = contents;

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class CreatePlannerRequest {
+    // - 속성
     private String title;
     private String contents;
     private String name;

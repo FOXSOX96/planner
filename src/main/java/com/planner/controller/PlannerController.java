@@ -12,8 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/planners")
 public class PlannerController {
+    // - 속성
     private final PlannerService plannerService;
 
+    // - 기능
     //일정생성
     @PostMapping
     public CreatePlannerResponse createPlanner(@RequestBody CreatePlannerRequest request) {
