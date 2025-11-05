@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class PlannerService {
     // - 속성
-    /**Planner패키지 > Comment패키지 포함*/
+    /**Planner패키지 (1) ---O< (N) Comment패키지 */
     private final PlannerRepository plannerRepository;
     private final CommentRepository commentRepository;
 

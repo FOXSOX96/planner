@@ -30,7 +30,7 @@ public class CommentService {
                 request.getPassword()
         );
         Comment savedComment = commentRepository.save(comment);
-        if (commentsOfPlan(plannerId).count() > 10) { //특정 일정에 댓글갯수가 10개 넘으면 저장하지 않음
+        if (commentRepository.countByPlannerId(plannerId) > 10) { //특정 일정에 댓글갯수가 10개 넘으면 저장하지 않음
             commentRepository.delete(comment); //계속 쌓이는 것 방지
             throw new IllegalStateException("댓글은 최대 10개까지만 등록할 수 있습니다.");
         } else {
