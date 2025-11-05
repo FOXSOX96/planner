@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class PlannerService {
     // - 속성
-    /**Planner패키지 (1) ---O< (N) Comment패키지 */
+    /**Planner (1) ---O< (N) Comment */
     private final PlannerRepository plannerRepository;
     private final CommentRepository commentRepository;
 
@@ -155,6 +155,7 @@ public class PlannerService {
         );
         if (planner.getPassword().equals(request.getPassword())) {
             plannerRepository.deleteById(plannerId);
+            commentRepository.deleteByPlannerId(plannerId);//일정을 제거했으니 그 일정에 달린 댓글도 모두 삭제
         } //패스워드를 서버로 전달하는 의미가 없는 것 같아서, 전달받았으니 검증까지 진행
         else {
             throw new AccessDeniedException("비밀번호가 일치하지 않습니다.");
