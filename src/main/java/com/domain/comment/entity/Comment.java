@@ -1,5 +1,6 @@
 package com.domain.comment.entity;
 
+import com.domain.planner.entity.Planner;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,6 +23,10 @@ public class Comment extends BaseEntity {
     private String name;
     @Column(nullable = false)
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "planner_id") // FK로 명시만 하는 용도
+    private Planner planner;
 
     // - 생성자
     public Comment(Long plannerId, String contents, String name, String password) {
