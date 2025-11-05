@@ -1,0 +1,9 @@
+package com.domain.comment.repository;
+
+import com.domain.comment.entity.Comment;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CommentRepository extends JpaRepository<Comment, Long> {
+    Long countByPlannerId(Long plannerId);
+    void deleteByPlannerId(Long plannerId);
+}
